@@ -1,17 +1,12 @@
-<cfoutput>
-<!DOCTYPE html>
+<cfoutput><!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Welcome to Coldbox!</title>
-	<meta name="description" content="ColdBox Application Template">
-    <meta name="author" content="Ortus Solutions, Corp">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fixtures | Herts Basketball League</title>
+	<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 <body>
-
-	<!---Container And Views --->
-	<div class="container">#view()#</div>
-
+	#view()#
 </body>
-</html>
-</cfoutput>
+</html></cfoutput>
