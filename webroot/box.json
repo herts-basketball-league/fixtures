@@ -24,10 +24,12 @@
     },
     "installPaths":{
         "coldbox":"coldbox/",
-        "testbox":"testbox/"
+        "testbox":"testbox/",
+        "hyper":"modules/hyper/"
     },
     "dependencies":{
-        "coldbox":"^7.0.0"
+        "coldbox":"^7.0.0",
+        "hyper":"^8.0.0"
     },
     "scripts":{
         "postInstall":"pathExists .env || cp .env.example .env && package set ignore=[]",
