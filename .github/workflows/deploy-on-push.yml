@@ -14,13 +14,13 @@ jobs:
         node-version: '20'
 
     - name: Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_CONNECTION }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
-        server-dir: ./
+        server-dir: hbl-fixtures/webroot
         log-level: verbose
         dry-run: false
         exclude: |
