@@ -20,6 +20,16 @@
 			.setUrl( 'https://scheduler.leaguelobster.com/api/season' )
 			.send();
 
+		if( seasonRequest.isError() ) {
+			writedump( var=seasonRequest.getMemento(), label='', expand=0, abort=0 );
+		}
+
+// writedump( var=seasonRequest.getHeader(), label='', expand=0, abort=0 );
+// writedump( var=seasonRequest.isOK(), label='', expand=0, abort=1 );
+// writedump( var=seasonRequest.getStatus(), label='', expand=0, abort=1 );
+// writedump( var=seasonRequest.getStatusCode(), label='', expand=0, abort=1 );
+
+
 		prc.seasons = seasonRequest.getData().deserializeJSON();
 
 		var teamRequest = hyper.setMethod( 'GET' )
@@ -27,12 +37,20 @@
 			.setUrl( 'https://scheduler.leaguelobster.com/api/team' )
 			.send();
 
+		if( teamRequest.isError() ) {
+			writedump( var=seasonRequest.getMemento(), label='', expand=0, abort=0 );
+		}
+
 		prc.teams = teamRequest.getData().deserializeJSON();
 
 		var matchRequest = hyper.setMethod( 'GET' )
 			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
 			.setUrl( 'https://scheduler.leaguelobster.com/api/team/23977671/matches' )
 			.send();
+
+		if( matchRequest.isError() ) {
+			writedump( var=seasonRequest.getMemento(), label='', expand=0, abort=0 );
+		}
 
 		prc.matches = matchRequest.getData().deserializeJSON();
 	}
