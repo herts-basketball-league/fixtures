@@ -21,7 +21,7 @@
 			.send();
 
 		if( seasonRequest.isError() ) {
-			writedump( var=seasonRequest.getMemento(), label='', expand=0, abort=0 );
+			writedump( var=seasonRequest.getMemento(), label='League Lobster Error - Seasons', expand=0, abort=0 );
 		}
 
 // writedump( var=seasonRequest.getHeader(), label='', expand=0, abort=0 );
@@ -29,8 +29,11 @@
 // writedump( var=seasonRequest.getStatus(), label='', expand=0, abort=1 );
 // writedump( var=seasonRequest.getStatusCode(), label='', expand=0, abort=1 );
 
-
-		prc.seasons = seasonRequest.getData().deserializeJSON();
+		try {
+			prc.seasons = seasonRequest.getData().deserializeJSON();
+		} catch( any exception ) {
+			writedump( var=exception, label='League Lobster Exception - Seasons', expand=0, abort=1 );
+		}
 
 		var teamRequest = hyper.setMethod( 'GET' )
 			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
@@ -38,10 +41,14 @@
 			.send();
 
 		if( teamRequest.isError() ) {
-			writedump( var=seasonRequest.getMemento(), label='', expand=0, abort=0 );
+			writedump( var=seasonRequest.getMemento(), label='League Lobster Error - Teams', expand=0, abort=0 );
 		}
 
-		prc.teams = teamRequest.getData().deserializeJSON();
+		try {
+			prc.teams = teamRequest.getData().deserializeJSON();
+		} catch( any exception ) {
+			writedump( var=exception, label='League Lobster Exception - Teams', expand=0, abort=1 );
+		}
 
 		var matchRequest = hyper.setMethod( 'GET' )
 			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
@@ -49,10 +56,14 @@
 			.send();
 
 		if( matchRequest.isError() ) {
-			writedump( var=seasonRequest.getMemento(), label='', expand=0, abort=0 );
+			writedump( var=seasonRequest.getMemento(), label='League Lobster Error - Matches', expand=0, abort=0 );
 		}
 
-		prc.matches = matchRequest.getData().deserializeJSON();
+		try {
+			prc.matches = matchRequest.getData().deserializeJSON();
+		} catch( any exception ) {
+			writedump( var=exception, label='League Lobster Exception - Matches', expand=0, abort=1 );
+		}
 	}
 
 	/**
