@@ -12,7 +12,7 @@
 				}
 			);
 
-			session.currentUser = userRequest.getData().deserializeJSON();
+			session.currentUser = userRequest.json();
 		}
 
 		var seasonRequest = hyper.setMethod( 'GET' )
@@ -30,7 +30,7 @@
 // writedump( var=seasonRequest.getStatusCode(), label='', expand=0, abort=1 );
 
 		try {
-			prc.seasons = seasonRequest.getData().deserializeJSON();
+			prc.seasons = seasonRequest.json();
 		} catch( any exception ) {
 			writedump( var=exception, label='League Lobster Exception - Seasons', expand=0, abort=1 );
 		}
@@ -45,7 +45,7 @@
 		}
 
 		try {
-			prc.teams = teamRequest.getData().deserializeJSON();
+			prc.teams = teamRequest.json();
 		} catch( any exception ) {
 			writedump( var=exception, label='League Lobster Exception - Teams', expand=0, abort=1 );
 		}
@@ -60,7 +60,7 @@
 		}
 
 		try {
-			prc.matches = matchRequest.getData().deserializeJSON();
+			prc.matches = matchRequest.json();
 		} catch( any exception ) {
 			writedump( var=exception, label='League Lobster Exception - Matches', expand=0, abort=1 );
 		}
