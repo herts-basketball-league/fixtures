@@ -1,4 +1,4 @@
-<cfoutput><!DOCTYPE html>
+<cfcontent reset="1"><cfoutput><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<header>
+	<!--- <header>
 		<nav>
 			<a href="/?fwreinit">Home</a>
 			<a href="#event.buildLink( 'competitions' )#">Competitions</a>
@@ -16,7 +16,7 @@
 			<a href="#event.buildLink( 'teams' )#">Teams</a>
 			<a href="#event.buildLink( 'fixtures' )#">Fixtures</a>
 		</nav>
-	</header>
+	</header> --->
 
 	<h1>Herts Basketball League</h1>
 
