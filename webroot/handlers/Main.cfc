@@ -1,4 +1,4 @@
-﻿component extends=coldbox.system.EventHandler {
+component extends=coldbox.system.EventHandler {
 	property name='hyper' inject='HyperBuilder@hyper';
 
 	function index( event, rc, prc ) {
@@ -41,7 +41,7 @@
 			.send();
 
 		if( teamRequest.isError() ) {
-			writedump( var=seasonRequest.getMemento(), label='League Lobster Error - Teams', expand=0, abort=0 );
+			writedump( var=teamRequest.getMemento(), label='League Lobster Error - Teams', expand=0, abort=0 );
 		}
 
 		try {
@@ -56,7 +56,7 @@
 			.send();
 
 		if( matchRequest.isError() ) {
-			writedump( var=seasonRequest.getMemento(), label='League Lobster Error - Matches', expand=0, abort=0 );
+			writedump( var=matchRequest.getMemento(), label='League Lobster Error - Matches', expand=0, abort=0 );
 		}
 
 		try {
