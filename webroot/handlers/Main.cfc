@@ -1,25 +1,40 @@
 ﻿component extends=coldbox.system.EventHandler {
+	property name='hyper' inject='HyperBuilder@hyper';
+
 	function index( event, rc, prc ) {
-		// event.setView( 'main/index' );
-	}
+		if( ! session.keyExists( 'currentUser' ) ) {
 
-	/**
-	 * Produce some restfulf data
-	 */
-	function data( event, rc, prc ) {
-		return [
-			{ 'id' : createUUID(), 'name' : 'Luis' },
-			{ 'id' : createUUID(), 'name' : 'Joe' },
-			{ 'id' : createUUID(), 'name' : 'Bob' },
-			{ 'id' : createUUID(), 'name' : 'Darth' }
-		];
-	}
+			var userRequest = hyper.post(
+				'https://scheduler.leaguelobster.com/api/access-token',
+				{
+					'username': 'richard+hbl@infoweb.co.uk',
+					'password': 'fifty-lifetime-freezer'
+				}
+			);
 
-	/**
-	 * Relocation example
-	 */
-	function doSomething( event, rc, prc ) {
-		relocate( 'main.index' );
+			session.currentUser = userRequest.getData().deserializeJSON();
+		}
+
+		var seasonRequest = hyper.setMethod( 'GET' )
+			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
+			.setUrl( 'https://scheduler.leaguelobster.com/api/season' )
+			.send();
+
+		prc.seasons = seasonRequest.getData().deserializeJSON();
+
+		var teamRequest = hyper.setMethod( 'GET' )
+			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
+			.setUrl( 'https://scheduler.leaguelobster.com/api/team' )
+			.send();
+
+		prc.teams = teamRequest.getData().deserializeJSON();
+
+		var matchRequest = hyper.setMethod( 'GET' )
+			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
+			.setUrl( 'https://scheduler.leaguelobster.com/api/team/23977671/matches' )
+			.send();
+
+		prc.matches = matchRequest.getData().deserializeJSON();
 	}
 
 	/**
