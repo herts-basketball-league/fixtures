@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
-        server-dir: hbl-fixtures/webroot
+        server-dir: ${{ secrets.FTP_DIRECTORY }}
         log-level: verbose
         dry-run: false
         exclude: |
