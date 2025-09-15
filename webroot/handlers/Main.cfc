@@ -15,6 +15,18 @@ component extends=coldbox.system.EventHandler {
 			session.currentUser = userRequest.json();
 		}
 
+		if( url.keyExists( 'refresh' ) ) {
+			application.delete( 'cache' );
+		} else {
+			application.cache = {};
+		}
+
+		prc.seasons = getData( 'seasons' );
+
+
+writedump( var=prc.seasons, label='prc.seasons', expand=0, abort=0 );
+
+/*
 		var seasonRequest = hyper.setMethod( 'GET' )
 			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
 			.setUrl( 'https://scheduler.leaguelobster.com/api/season' )
@@ -34,7 +46,15 @@ component extends=coldbox.system.EventHandler {
 		} catch( any exception ) {
 			writedump( var=exception, label='League Lobster Exception - Seasons', expand=0, abort=1 );
 		}
+*/
 
+		prc.teams = getData( 'teams' );
+
+
+writedump( var=prc.teams, label='prc.teams', expand=0, abort=0 );
+
+
+/*
 		var teamRequest = hyper.setMethod( 'GET' )
 			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
 			.setUrl( 'https://scheduler.leaguelobster.com/api/team' )
@@ -49,7 +69,14 @@ component extends=coldbox.system.EventHandler {
 		} catch( any exception ) {
 			writedump( var=exception, label='League Lobster Exception - Teams', expand=0, abort=1 );
 		}
+*/
 
+		prc.matches = getData( 'matches', 23977671 );
+
+
+writedump( var=prc.matches, label='prc.matches', expand=0, abort=0 );
+
+/*
 		var matchRequest = hyper.setMethod( 'GET' )
 			.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
 			.setUrl( 'https://scheduler.leaguelobster.com/api/team/23977671/matches' )
@@ -63,6 +90,62 @@ component extends=coldbox.system.EventHandler {
 			prc.matches = matchRequest.json();
 		} catch( any exception ) {
 			writedump( var=exception, label='League Lobster Exception - Matches', expand=0, abort=1 );
+		}
+*/
+	}
+
+	function getData( endpoint, id='' ) {
+		switch( endpoint ) {
+			case 'seasons':
+				var urlPart = 'season';
+			break;
+
+			case 'teams':
+				var urlPart = 'team';
+			break;
+
+			case 'matches':
+				var urlPart = 'team/#id#/matches';
+			break;
+
+			default:
+		}
+
+		if( application.cache.keyExists( endpoint ) ) {
+			return application.cache[ endpoint ];
+		} else {
+			var endpointRequest = hyper.setMethod( 'GET' )
+				.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
+				.setUrl( 'https://scheduler.leaguelobster.com/api/#urlPart#' )
+				.send();
+
+			switch( endpointRequest.getStatusCode() ) {
+				case '429':
+					sleep( 5000 );
+
+					var endpointRequest = hyper.setMethod( 'GET' )
+						.withHeaders( { 'Authorization': 'JWT #session.currentUser.token#' } )
+						.setUrl( 'https://scheduler.leaguelobster.com/api/#urlPart#' )
+						.send();
+
+				break;
+
+				default:
+			}
+
+			if( endpointRequest.isError() ) {
+writedump( var=endpointRequest.getMemento(), label='League Lobster Error - #endpoint#', expand=0, abort=0 );
+			}
+
+			try {
+				var dataset = endpointRequest.json();
+			} catch( any exception ) {
+writedump( var=exception, label='League Lobster Exception - #endpoint#', expand=0, abort=1 );
+			}
+
+			application.cache[ endpoint ] = dataset;
+
+			return application.cache[ endpoint ];
 		}
 	}
 
