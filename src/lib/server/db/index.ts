@@ -3,8 +3,11 @@ import postgres from 'postgres';
 import * as schema from './schema';
 import { env } from '$env/dynamic/private';
 
-if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
+if ( !env.DATABASE_URL ) throw new Error( 'DATABASE_URL is not set' );
 
-const client = postgres(env.DATABASE_URL);
+const client = postgres( env.DATABASE_URL, {
+	max: 1,
+	prepare: false  // ← required for Supabase transaction pooler in prod
+} );
 
-export const db = drizzle(client, { schema });
+export const db = drizzle( client, { schema } );
