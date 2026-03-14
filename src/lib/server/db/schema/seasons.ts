@@ -1,18 +1,35 @@
+import { relations } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
-import { pgTable, varchar, timestamp } from 'drizzle-orm/pg-core';
+import { pgPolicy, pgTable, uuid, varchar, timestamp } from 'drizzle-orm/pg-core';
+// import { competitions } from './competitions';
 
 export const seasons = pgTable( 'seasons', {
-	id: varchar( 'id', { length: 255 } ).primaryKey().notNull(),
+	id: uuid( 'id' ).primaryKey().notNull(),
 	name: varchar( 'name', { length: 255 } ).notNull().unique(),
 	startDate: timestamp( 'startDate' ).notNull(),
 	endDate: timestamp( 'endDate' ),
-	createdAt: timestamp( 'createdAt' )
+	createdAt: timestamp( 'created_at' )
 		.default( sql`now()` )
 		.$onUpdateFn( () => new Date() )
 		.notNull(),
-	updatedAt: timestamp( 'updatedAt' )
+	updatedAt: timestamp( 'updated_at' )
 		.default( sql`now()` )
 		.$onUpdateFn( () => new Date() )
 		.notNull(),
-	deletedAt: timestamp( 'deletedAt' ),
-} );
+	deletedAt: timestamp( 'deleted_at' ),
+}, ( table ) => [
+	pgPolicy( 'authenticated has full access to seasons', {
+		for: 'all',
+		to: 'authenticated',
+		using: sql`true`,
+	} ),
+	pgPolicy( 'public can read seasons', {
+		for: 'select',
+		to: 'public',
+		using: sql`true`,
+	} ),
+] ).enableRLS();
+
+// export const seasonsRelations = relations( seasons, ( { many } ) => ( {
+// 	competitions: many( competitions ),
+// } ) );
