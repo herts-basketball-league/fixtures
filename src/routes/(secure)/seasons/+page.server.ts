@@ -4,26 +4,13 @@ import { eq } from 'drizzle-orm';
 import { seasons } from '$lib/server/db/schema';
 
 export async function load() {
+	const recordset = await db.query.seasons.findMany( {
+		where: ( seasons, { isNull } ) => isNull( seasons.deletedAt ),
+		orderBy: ( seasons, { desc } ) => desc( seasons.startDate )
+	} );
 
-	try {
-		const recordset = await db.query.seasons.findMany( {
-			where: ( seasons, { isNull } ) => isNull( seasons.deletedAt ),
-			orderBy: ( seasons, { desc } ) => desc( seasons.startDate )
-		} );
-
-		return { seasons: recordset };
-	} catch( event ) {
-
-console.log(event);
-
-				// return fail( 500, {
-					// error: event.error.message
-				// } );
-
-
+	if( recordset.length == 0 ) {
 		redirect( 303, '/seasons/add' );
-
-		// return { seasons: [] };
 	}
 }
 
