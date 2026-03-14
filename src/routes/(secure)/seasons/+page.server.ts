@@ -7,7 +7,8 @@ export async function load() {
 
 	try {
 		const recordset = await db.query.seasons.findMany( {
-			orderBy: ( seasons, { asc } ) => asc( seasons.startDate )
+			where: ( seasons, { isNull } ) => isNull( seasons.deletedAt ),
+			orderBy: ( seasons, { desc } ) => desc( seasons.startDate )
 		} );
 
 		return { seasons: recordset };
@@ -20,7 +21,7 @@ console.log(event);
 				// } );
 
 
-redirect( 303, '/seasons/add' );
+		redirect( 303, '/seasons/add' );
 
 		// return { seasons: [] };
 	}
