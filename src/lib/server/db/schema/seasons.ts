@@ -1,10 +1,10 @@
 import { relations } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 import { pgPolicy, pgTable, uuid, varchar, timestamp } from 'drizzle-orm/pg-core';
-// import { competitions } from './competitions';
+import { competitions } from './competitions';
 
 export const seasons = pgTable( 'seasons', {
-	id: uuid( 'id' ).primaryKey().notNull(),
+	id: uuid( 'id' ).primaryKey().defaultRandom().notNull(),
 	name: varchar( 'name', { length: 255 } ).notNull().unique(),
 	startDate: timestamp( 'startDate' ).notNull(),
 	endDate: timestamp( 'endDate' ),
@@ -30,6 +30,6 @@ export const seasons = pgTable( 'seasons', {
 	} ),
 ] ).enableRLS();
 
-// export const seasonsRelations = relations( seasons, ( { many } ) => ( {
-// 	competitions: many( competitions ),
-// } ) );
+export const seasonsRelations = relations( seasons, ( { many } ) => ( {
+	competitions: many( competitions ),
+} ) );

@@ -4,10 +4,10 @@ import { pgPolicy, pgTable, uuid, varchar, timestamp } from 'drizzle-orm/pg-core
 import { seasons } from './seasons';
 
 export const competitions = pgTable( 'competitions', {
-	id: uuid( 'id' ).primaryKey().notNull(),
+	id: uuid( 'id' ).primaryKey().defaultRandom().notNull(),
 	name: varchar( 'name', { length: 255 } ).notNull().unique(),
 	shortName: varchar( 'short_name', { length: 255 } ),
-	seasonID: uuid( 'season_id', { length: 255 } ).notNull().references( () => seasons.id ),
+	seasonID: uuid( 'season_id' ).notNull().references( () => seasons.id ),
 	createdAt: timestamp( 'created_at' )
 		.default( sql`now()` )
 		.$onUpdateFn( () => new Date() )

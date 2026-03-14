@@ -5,8 +5,6 @@ import { db } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
 import { seasons } from '$lib/server/db/schema';
 
-import crypto from 'node:crypto';
-
 export const load: PageServerLoad = async ( { params } ) => {
 	if ( params.id != 'add' ) {
 		const season = await db.query.seasons.findFirst( {
@@ -54,7 +52,6 @@ export const actions: Actions = {
 		if ( id === 'add' ) {
 			await db.insert( seasons ).values(
 				{
-					id: crypto.randomUUID(),
 					name: name,
 					startDate: startDate,
 					endDate: endDate
