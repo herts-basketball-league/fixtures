@@ -12,6 +12,8 @@ export async function load() {
 	if( recordset.length == 0 ) {
 		redirect( 303, '/seasons/add' );
 	}
+
+	return { seasons: recordset };
 }
 
 export const actions: Actions = {
