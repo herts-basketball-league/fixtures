@@ -23,7 +23,16 @@ export async function load() {
 		redirect( 303, '/competitions/add' );
 	}
 
-	return { competitions: recordset }
+	const seasonData = await db.query.seasons.findMany( {
+		where: ( seasons, { isNull } ) => isNull( seasons.deletedAt ),
+		orderBy: ( seasons, { desc } ) => desc( seasons.startDate )
+	} );
+
+
+	return {
+		competitions: recordset,
+		seasons: seasonData,
+	}
 }
 
 export const actions: Actions = {
