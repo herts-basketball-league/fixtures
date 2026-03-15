@@ -5,7 +5,7 @@ import { competitions } from './competitions';
 
 export const teams = pgTable( 'teams', {
 	id: uuid( 'id' ).primaryKey().defaultRandom().notNull(),
-	name: varchar( 'name', { length: 255 } ).notNull().unique(),
+	name: varchar( 'name', { length: 255 } ).notNull(),
 	shortName: varchar( 'short_name', { length: 255 } ),
 	competitionID: uuid( 'competition_id' ).notNull().references( () => competitions.id ),
 	createdAt: timestamp( 'created_at' )
