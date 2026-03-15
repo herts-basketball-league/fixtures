@@ -1,26 +1,23 @@
 import { fail, redirect } from '@sveltejs/kit'
 import { db } from '$lib/server/db';
-import { eq } from 'drizzle-orm';
-import { competitions } from '$lib/server/db/schema';
+import { eq, asc, desc, isNull } from 'drizzle-orm';
+import { competitions, seasons } from '$lib/server/db/schema';
 
 export async function load() {
-	const recordset = await db.query.competitions.findMany( {
-		columns: {
-			id: true,
-			name: true,
-			shortName: true,
-		},
-		with: {
+	const recordset = await db
+		.select( {
+			id: competitions.id,
+			name: competitions.name,
+			shortName: competitions.shortName,
 			season: {
-				columns: {
-					id: true,
-					name: true,
-				},
+				id: seasons.id,
+				name: seasons.name,
 			},
-		},
-		where: ( competitions, { isNull } ) => isNull( competitions.deletedAt ),
-		orderBy: ( competitions, { desc } ) => desc( competitions.name )
-	} );
+		} )
+		.from( competitions )
+		.innerJoin( seasons, eq( competitions.seasonID, seasons.id ) )
+		.where( isNull( competitions.deletedAt ) )
+		.orderBy( desc( seasons.name ), asc( competitions.name ) );
 
 	if( recordset.length == 0 ) {
 		redirect( 303, '/competitions/add' );
