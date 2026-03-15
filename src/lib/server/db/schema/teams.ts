@@ -1,13 +1,13 @@
 import { relations } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 import { pgPolicy, pgTable, uuid, varchar, timestamp } from 'drizzle-orm/pg-core';
-import { seasons } from './seasons';
+import { competitions } from './competitions';
 
-export const competitions = pgTable( 'competitions', {
+export const teams = pgTable( 'teams', {
 	id: uuid( 'id' ).primaryKey().defaultRandom().notNull(),
 	name: varchar( 'name', { length: 255 } ).notNull().unique(),
 	shortName: varchar( 'short_name', { length: 255 } ),
-	seasonID: uuid( 'season_id' ).notNull().references( () => seasons.id ),
+	competitionID: uuid( 'competition_id' ).notNull().references( () => competitions.id ),
 	createdAt: timestamp( 'created_at' )
 		.default( sql`now()` )
 		.$onUpdateFn( () => new Date() )
@@ -18,21 +18,21 @@ export const competitions = pgTable( 'competitions', {
 		.notNull(),
 	deletedAt: timestamp( 'deleted_at' ),
 }, ( table ) => [
-	pgPolicy( 'authenticated has full access to competitions', {
+	pgPolicy( 'authenticated has full access to teams', {
 		for: 'all',
 		to: 'authenticated',
 		using: sql`true`,
 	} ),
-	pgPolicy( 'public can read competitions', {
+	pgPolicy( 'public can read teams', {
 		for: 'select',
 		to: 'public',
 		using: sql`true`,
 	} ),
 ] ).enableRLS();
 
-export const competitionsRelations = relations( competitions, ( { one } ) => ( {
-	season: one( seasons, {
-		fields: [competitions.seasonID],
-		references: [seasons.id],
+export const teamsRelations = relations( teams, ( { one } ) => ( {
+	competition: one( competitions, {
+		fields: [ teams.competitionID ],
+		references: [ competitions.id ],
 	} ),
 } ) );
