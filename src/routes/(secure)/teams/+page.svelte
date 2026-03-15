@@ -27,6 +27,9 @@
 						<thead class="bg-gray-50 dark:bg-gray-800/75">
 							<tr>
 								<th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-200">
+									Season
+								</th>
+								<th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-200">
 									Competition
 								</th>
 								<th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-200">
@@ -44,6 +47,9 @@
 						<tbody class="divide-y divide-gray-200 bg-white dark:divide-white/10 dark:bg-gray-800/50">
 							{#each data.teams as team}
 								<tr>
+									<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">
+										{ team.season.name }
+									</td>
 									<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">
 										{ team.competition.name }
 									</td>
