@@ -1,4 +1,36 @@
+import { db } from '$lib/server/db';
+import { eq, asc, isNull } from 'drizzle-orm';
+import { seasons, competitions, teams } from '$lib/server/db/schema';
+
 import { generateBergerTable } from '$lib/berger';
+
+export async function load() {
+	const recordset = await db
+		.select( {
+			id: teams.id,
+			name: teams.name,
+			season: {
+				id: seasons.id,
+				name: seasons.name,
+			},
+			competition: {
+				id: competitions.id,
+				name: competitions.name,
+			},
+		} )
+		.from( teams )
+		.innerJoin( competitions, eq( teams.competitionID, competitions.id ) )
+		.innerJoin( seasons, eq( competitions.seasonID, seasons.id ) )
+		.where( isNull( teams.deletedAt ) )
+		.orderBy( asc( seasons.name ), asc( competitions.name ), asc( teams.name ) );
+
+
+console.log(recordset);
+
+
+
+	return { teams: recordset }
+}
 
 export const actions = {
 	generate: async ( { request, params } ) => {
