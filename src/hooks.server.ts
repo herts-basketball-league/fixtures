@@ -1,17 +1,18 @@
+import { createSupabaseServerClient } from '$lib/supabaseServer';
 import type { Handle } from '@sveltejs/kit';
-import { building } from '$app/environment';
-import { auth } from '$lib/server/auth';
-import { svelteKitHandler } from 'better-auth/svelte-kit';
 
-const handleBetterAuth: Handle = async ({ event, resolve }) => {
-	const session = await auth.api.getSession({ headers: event.request.headers });
+export const handle: Handle = async ( { event, resolve } ) => {
+	const supabase = createSupabaseServerClient( event.cookies );
 
-	if (session) {
-		event.locals.session = session.session;
-		event.locals.user = session.user;
-	}
+	// getUser() validates the JWT with Supabase Auth server — secure
+	const { data: { user } } = await supabase.auth.getUser();
 
-	return svelteKitHandler({ event, resolve, auth, building });
-};
+	event.locals.supabase = supabase;
+	event.locals.user = user;  // store user instead of session
 
-export const handle: Handle = handleBetterAuth;
+	return resolve( event, {
+		filterSerializedResponseHeaders(name) {
+			return name === 'content-range' || name === 'x-supabase-api-version';
+		}
+	} )
+}
