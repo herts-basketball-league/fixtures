@@ -64,7 +64,7 @@ export const actions: Actions = {
 				} );
 			} */
 
-			throw redirect( 303, '/seasons/add' );
+			throw redirect( 303, '/admin/seasons/add' );
 		} else {
 			await db.update( seasons )
 				.set( {
@@ -79,7 +79,7 @@ export const actions: Actions = {
 				} );
 			} */
 
-			throw redirect( 303, '/seasons' );
+			throw redirect( 303, '/admin/seasons' );
 		}
 	}
 }

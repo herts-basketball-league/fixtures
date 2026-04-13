@@ -19,7 +19,7 @@
 
 		<div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
 			<button type="button" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500">
-				<a href="/seasons/add">Add Season</a>
+				<a href="/admin/seasons/add">Add Season</a>
 			</button>
 		</div>
 	</div>
@@ -51,7 +51,7 @@
 							{#each data.seasons as season}
 								<tr>
 									<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">
-										<a href="/seasons/{ season.id }" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
+										<a href="/admin/seasons/{ season.id }" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
 											{ season.name }
 											<span class="sr-only">{ season.name }</span>
 										</a>
@@ -107,7 +107,7 @@
 			{#each data.seasons as season}
 				<tr>
 					<td>
-						<a href="/seasons/{ season.id }">{ season.name }</a>
+						<a href="/admin/seasons/{ season.id }">{ season.name }</a>
 					</td>
 					<td>{ formatDate.format( new Date( season.startDate ) ) }</td>
 					<td>{ formatDate.format( new Date( season.endDate ) ) }</td>

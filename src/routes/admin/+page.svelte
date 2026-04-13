@@ -3,7 +3,7 @@
 	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public';
 	import { goto } from '$app/navigation';
 
-	export let data  // contains session from layout.server.ts
+	let { data } = $props();  // contains session from layout.server.ts
 
 	const supabase = createBrowserClient( PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY );
 

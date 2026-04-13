@@ -20,7 +20,7 @@ export async function load() {
 		.orderBy( desc( seasons.name ), asc( competitions.name ) );
 
 	if( recordset.length == 0 ) {
-		redirect( 303, '/competitions/add' );
+		redirect( 303, '/admin/competitions/add' );
 	}
 
 	const seasonData = await db.query.seasons.findMany( {
@@ -46,6 +46,6 @@ export const actions: Actions = {
 		await db.delete( competitions )
 			.where( eq( competitions.id, id ) );
 
-		redirect( 303, '/competitions' );
+		redirect( 303, '/admin/competitions' );
 	},
 }

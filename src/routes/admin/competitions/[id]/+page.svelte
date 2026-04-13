@@ -53,6 +53,6 @@
 	<div class="mt-6 flex items-center justify-start gap-x-6">
 		<button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:focus-visible:outline-indigo-500">{ data.competition ? 'Update' : 'Add' } Competition</button>
 
-		<button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white"><a href="/competitions">cancel</a></button>
+		<button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white"><a href="/admin/competitions">cancel</a></button>
 	</div>
 </form>

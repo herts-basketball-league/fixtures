@@ -3,42 +3,42 @@ import type { Actions, PageServerLoad } from './$types'
 
 import { db } from '$lib/server/db';
 import { eq } from 'drizzle-orm';
-import { competitions } from '$lib/server/db/schema';
+import { teams } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async ( { params } ) => {
-	const seasons = await db.query.seasons.findMany( {
-		where: ( seasons, { isNull } ) => isNull( seasons.deletedAt ),
-		orderBy: ( seasons, { desc } ) => desc( seasons.name )
+	const competitions = await db.query.competitions.findMany( {
+		where: ( competitions, { isNull } ) => isNull( competitions.deletedAt ),
+		orderBy: ( competitions, { asc } ) => asc( competitions.name )
 	} );
 
 	if ( params.id != 'add' ) {
-		const competition = await db.query.competitions.findFirst( {
+		const team = await db.query.teams.findFirst( {
 			columns: {
 				id: true,
 				name: true,
 				shortName: true,
-				seasonID: true,
+				competitionID: true,
 			 },
-			where: ( competitions, { eq } ) => eq( competitions.id, params.id ),
+			where: ( teams, { eq } ) => eq( teams.id, params.id ),
 		} );
 
 		/* if ( error ) {
 			console.error( 'Error loading sport:', error );
 
 			return {
-				competition: competition || []
+				team: team || []
 			};
 		} */
 
 		return {
-			competition: competition,
-			seasons: seasons
+			team: team,
+			competitions: competitions
 		};
 	}
 
 	return {
-		competition: null,
-		seasons: seasons
+		team: null,
+		competitions: competitions
 	};
 }
 
@@ -50,20 +50,20 @@ export const actions: Actions = {
 
 		const name = formData.get( 'name' ) as string
 		const shortName = formData.get( 'shortName' ) as string
-		const seasonID = formData.get( 'seasonID' ) as string
+		const competitionID = formData.get( 'competitionID' ) as string
 
 		if ( id === 'add' ) {
-			// await db.insert( competitions ).values(
+			// await db.insert( teams ).values(
 			// 	{
 			// 		name: name,
 			// 		shortName: shortName,
-			// 		seasonID: seasonID,
+			// 		competitionID: competitionID,
 			// 	}
 			// );
 
 
-			await db.insert( competitions ).values( {
-				name, shortName, seasonID
+			await db.insert( teams ).values( {
+				name, shortName, competitionID
 			} );
 
 			/* if ( error ) {
@@ -72,12 +72,12 @@ export const actions: Actions = {
 				} );
 			} */
 
-			throw redirect( 303, '/competitions/add' );
+			throw redirect( 303, '/admin/teams/add' );
 		} else {
-			await db.update( competitions )
+			await db.update( teams )
 				.set( {
-					name, shortName, seasonID
-				} ).where( eq( competitions.id, id ) )
+					name, shortName, competitionID
+				} ).where( eq( teams.id, id ) )
 
 			/* if ( error ) {
 				return fail( 500, {
@@ -85,7 +85,7 @@ export const actions: Actions = {
 				} );
 			} */
 
-			throw redirect( 303, '/competitions' );
+			throw redirect( 303, '/admin/teams' );
 		}
 	}
 }

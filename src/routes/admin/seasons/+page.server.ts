@@ -10,7 +10,7 @@ export async function load() {
 	} );
 
 	if( recordset.length == 0 ) {
-		redirect( 303, '/seasons/add' );
+		redirect( 303, '/admin/seasons/add' );
 	}
 
 	return { seasons: recordset };
@@ -27,6 +27,6 @@ export const actions: Actions = {
 		await db.delete( seasons )
 			.where( eq( seasons.id, id ) );
 
-		redirect( 303, '/seasons' );
+		redirect( 303, '/admin/seasons' );
 	},
 }

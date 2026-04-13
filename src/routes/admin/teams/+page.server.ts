@@ -24,7 +24,7 @@ export async function load() {
 		.orderBy( asc( seasons.name ), asc( competitions.name ), asc( teams.name ) );
 
 	if( recordset.length == 0 ) {
-		redirect( 303, '/teams/add' );
+		redirect( 303, '/admin/teams/add' );
 	}
 
 	return { teams: recordset }
@@ -41,6 +41,6 @@ export const actions: Actions = {
 		await db.delete( teams )
 			.where( eq( teams.id, id ) );
 
-		redirect( 303, '/teams' );
+		redirect( 303, '/admin/teams' );
 	},
 }
