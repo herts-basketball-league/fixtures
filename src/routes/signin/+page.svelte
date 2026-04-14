@@ -5,14 +5,17 @@
 
 	const supabase = createBrowserClient( PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY );
 
-	let email = '';
-	let password = '';
-	let error = '';
+	let email = $state('');
+	let password = $state('');
+	let error = $state('');
+	// let loading = $state(false)
 
-	async function signin() {
+	async function signin( e ) {
+		e.preventDefault();
+
 		const { error: err } = await supabase.auth.signInWithPassword( { email, password } );
 
-		if (err) {
+		if ( err ) {
 			error = err.message;
 		} else {
 			goto( '/admin' );
@@ -20,7 +23,7 @@
 	}
 </script>
 
-<form on:submit|preventDefault={signin}>
+<form onsubmit={signin}>
 	<input type="email" bind:value={email} placeholder="Email" required />
 	<input type="password" bind:value={password} placeholder="Password" required />
 	<button type="submit">Signin</button>
