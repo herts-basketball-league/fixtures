@@ -8,6 +8,13 @@
       "when": 1777038053857,
       "tag": "20260424134053_introspection",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777038355117,
+      "tag": "20260424134555_exclude_weeks",
+      "breakpoints": true
     }
   ]
 }
