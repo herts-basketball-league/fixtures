@@ -6,7 +6,7 @@
 
 	let selectedSeason = $state( '' );
 	let selectedCompetition = $state( '' );
-	let teams = $state<{ id: string; name: string }[]>([]);
+	let teams = $state<{ id: string, name: string }[]>([]);
 	let legs = $state( 2 );
 	let loading = $state( false );
 
@@ -15,6 +15,10 @@
 		data.competitions.filter(
 			c => c.seasonID === selectedSeason
 		)
+	);
+
+	let season = $derived(
+		data.seasons.find( s => s.id === selectedSeason ) ?? null
 	);
 
 	// generate fixtures from teams array, mapping position numbers back to team names
@@ -110,7 +114,7 @@
 
 			{#each Object.entries(rounds) as [round, matches]}
 				<div class="mb-4">
-					<h2 class="text-sm font-medium text-gray-500 mb-2">Round {round}</h2>
+					<h2 class="text-sm font-medium text-gray-500 mb-2">Round {round} - Mon, {Intl.DateTimeFormat('en-GB', {dateStyle:'medium'}).format(season?.startDate)}</h2>
 					<div class="border rounded-lg overflow-hidden">
 						<table class="w-full text-sm">
 							<thead>
