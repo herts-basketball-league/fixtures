@@ -1,7 +1,23 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { browser } from '$app/environment';
 
 	let { data } = $props();
+
+	let selectedSeason = $state(
+		browser ? ( localStorage.getItem( 'competitionsSeasonFilter' ) ?? '' ) : ''
+	);
+
+	$effect(() => {
+		if ( browser ) localStorage.setItem( 'competitionsSeasonFilter', selectedSeason );
+	});
+
+	let competitions = $derived(
+		selectedSeason
+			? data.competitions.filter(
+				c => c.season.id === selectedSeason
+			) : data.competitions
+	);
 </script>
 
 <div class="px-4 sm:px-6 lg:px-8">
@@ -25,7 +41,12 @@
 					<label for="location" class="block text-sm/6 font-medium text-gray-900 dark:text-white">Filter by Season</label>
 
 					<div class="mt-2 grid grid-cols-1">
-						<select id="location" name="location" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
+						<select
+							id="location"
+							name="location"
+							bind:value={selectedSeason}
+							class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
+							<option value="">All Seasons</option>
 							{#each data.seasons as season}
 								<option value={season.id}>{season.name}</option>
 							{/each}
@@ -36,9 +57,6 @@
 						</svg>
 					</div>
 				</div>
-
-
-
 
 				<div class="overflow-hidden shadow-sm outline-1 outline-black/5 sm:rounded-lg dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
 					<table class="relative min-w-full divide-y divide-gray-300 dark:divide-white/15">
@@ -60,7 +78,7 @@
 						</thead>
 
 						<tbody class="divide-y divide-gray-200 bg-white dark:divide-white/10 dark:bg-gray-800/50">
-							{#each data.competitions as competition}
+							{#each competitions as competition}
 								<tr>
 									<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">
 										{ competition.season.name }
