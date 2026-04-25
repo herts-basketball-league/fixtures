@@ -27,7 +27,20 @@ export async function load() {
 		redirect( 303, '/admin/teams/add' );
 	}
 
-	return { teams: recordset }
+	const seasonData = await db.query.seasons.findMany( {
+		where: ( seasons, { isNull } ) => isNull( seasons.deletedAt ),
+		orderBy: ( seasons, { desc } ) => desc( seasons.startDate )
+	} );
+
+	const competitionData = await db.query.competitions.findMany( {
+		where: ( competitions, { isNull } ) => isNull( competitions.deletedAt ),
+		orderBy: ( competitions, { asc } ) => asc( competitions.name )
+	} );
+
+	return { teams: recordset
+		,seasons: seasonData
+		,competitions: competitionData
+	}
 }
 
 export const actions: Actions = {

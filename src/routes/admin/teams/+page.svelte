@@ -1,7 +1,43 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { browser } from '$app/environment';
 
 	let { data } = $props();
+
+	let selectedSeason = $state(
+		browser ? ( localStorage.getItem( 'seasonFilter' ) ?? '' ) : ''
+	);
+
+	$effect( () => {
+		if ( browser ) localStorage.setItem( 'seasonFilter', selectedSeason );
+	} );
+
+	let selectedCompetition = $state(
+		browser ? ( localStorage.getItem( 'competitionFilter' ) ?? '' ) : ''
+	);
+
+	$effect( () => {
+		if ( browser ) localStorage.setItem( 'competitionFilter', selectedCompetition );
+	} );
+
+	// filter competitions by selected season
+	let competitions = $derived(
+		data.competitions.filter(
+			c => c.seasonID === selectedSeason
+		)
+	);
+
+// $effect(() => {
+// 	console.log('competitions', competitions);
+// 	console.log('selectedSeason', selectedSeason);
+// });
+
+	let teams = $derived(
+		selectedSeason
+			? data.teams.filter(
+				c => c.season.id === selectedSeason && c.competition.id === selectedCompetition
+			) : data.teams
+	);
 </script>
 
 <div class="px-4 sm:px-6 lg:px-8">
@@ -21,8 +57,43 @@
 	<div class="mt-8 flow-root">
 		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 			<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-				<div
-					class="overflow-hidden shadow-sm outline-1 outline-black/5 sm:rounded-lg dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
+				<div class="flex gap-4 flex-wrap mb-6">
+					<div class="flex flex-col gap-1 pb-4 w-1/4">
+						<label for="season" class="block text-sm/6 font-medium text-gray-900 dark:text-white">Filter by Season</label>
+
+						<div class="mt-2 grid grid-cols-1">
+							<select
+								id="season"
+								name="season"
+								bind:value={selectedSeason}
+								class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
+								<option value="">All Seasons</option>
+								{#each data.seasons as season}
+									<option value={season.id}>{season.name}</option>
+								{/each}
+							</select>
+						</div>
+					</div>
+
+					<div class="flex flex-col gap-1 pb-4 w-1/4">
+						<label for="season" class="block text-sm/6 font-medium text-gray-900 dark:text-white">Filter by Competition</label>
+
+						<div class="mt-2 grid grid-cols-1">
+							<select
+								id="competition"
+								name="competition"
+								bind:value={selectedCompetition}
+								class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
+								<option value="">All Competitions</option>
+								{#each competitions as competition}
+									<option value={competition.id}>{competition.name}</option>
+								{/each}
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="overflow-hidden shadow-sm outline-1 outline-black/5 sm:rounded-lg dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
 					<table class="relative min-w-full divide-y divide-gray-300 dark:divide-white/15">
 						<thead class="bg-gray-50 dark:bg-gray-800/75">
 							<tr>
@@ -45,7 +116,7 @@
 						</thead>
 
 						<tbody class="divide-y divide-gray-200 bg-white dark:divide-white/10 dark:bg-gray-800/50">
-							{#each data.teams as team}
+							{#each teams as team}
 								<tr>
 									<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">
 										{ team.season.name }
