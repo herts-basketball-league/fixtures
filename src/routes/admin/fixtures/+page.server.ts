@@ -12,7 +12,12 @@ export async function load() {
 		orderBy: ( competitions ) => asc( competitions.name ),
 	} );
 
-	return { seasons, competitions };
+	const excludedWeeks = await db.query.excluded_fixture_weeks.findMany( {
+		where: ( excluded_fixture_weeks ) => isNull( excluded_fixture_weeks.deletedAt ),
+		orderBy: ( excluded_fixture_weeks ) => asc( excluded_fixture_weeks.weekDate ),
+	} );
+
+	return { seasons, competitions, excludedWeeks };
 }
 
 export const actions = {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { generateBergerTable } from '$lib/berger';
+	import { assignRoundDates, formatWeekDate } from '$lib/schedule';
 
 	let { data } = $props();
 
@@ -62,6 +63,26 @@
 		teams = json.teams;
 		loading = false;
 	}
+
+	// for now an empty array — you'll hook up excluded weeks later
+	let excludedDates = $derived(
+		data.excludedWeeks.map(w => new Date(w.weekDate))
+	);
+
+// dump data to browser console
+// $effect(() => {
+// 	console.log('excludedDates', excludedDates);
+// });
+
+	let roundDates = $derived(
+		season?.startDate && preview.length > 0
+			? assignRoundDates(
+				new Date(season.startDate),
+				Object.keys(rounds).length,
+				excludedDates
+			)
+			: {}
+	);
 </script>
 
 <div class="p-4">
@@ -114,7 +135,13 @@
 
 			{#each Object.entries(rounds) as [round, matches]}
 				<div class="mb-4">
-					<h2 class="text-sm font-medium text-gray-500 mb-2">Round {round} - Mon, {Intl.DateTimeFormat('en-GB', {dateStyle:'medium'}).format(season?.startDate)}</h2>
+					<h2 class="text-sm font-medium text-gray-500 mb-2">
+						Round {round}
+						{#if roundDates[Number(round)]}
+							- {formatWeekDate(roundDates[Number(round)])}
+						{/if}
+					</h2>
+					
 					<div class="border rounded-lg overflow-hidden">
 						<table class="w-full text-sm">
 							<thead>
