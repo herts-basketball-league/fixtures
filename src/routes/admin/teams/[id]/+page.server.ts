@@ -18,9 +18,34 @@ export const load: PageServerLoad = async ( { params } ) => {
 				name: true,
 				shortName: true,
 				competitionID: true,
-			 },
+			},
+			with: {
+				competition: {
+					columns: {
+						id: true,
+						name: true,
+					},
+					with: {
+						season: {
+							columns: {
+								id: true,
+								name: true,
+								startDate: true,
+							}
+						}
+					}
+				}
+			},
 			where: ( teams, { eq } ) => eq( teams.id, params.id ),
 		} );
+
+		const competitions = await db.query.competitions.findMany( {
+			where: ( competitions, { eq, isNull, and } ) => and(
+				isNull( competitions.deletedAt ),
+				eq( competitions.seasonID, team.competition.season.id )
+			),
+			orderBy: ( competitions, { asc } ) => asc( competitions.name )
+		});
 
 		/* if ( error ) {
 			console.error( 'Error loading sport:', error );
