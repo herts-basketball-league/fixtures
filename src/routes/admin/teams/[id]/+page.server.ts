@@ -16,6 +16,7 @@ export const load: PageServerLoad = async ( { params } ) => {
 			columns: {
 				id: true,
 				name: true,
+				gameDay: true,
 				shortName: true,
 				competitionID: true,
 			},
@@ -75,6 +76,7 @@ export const actions: Actions = {
 
 		const name = formData.get( 'name' ) as string
 		const shortName = formData.get( 'shortName' ) as string
+		const gameDay = formData.get( 'gameDay' ) as string
 		const competitionID = formData.get( 'competitionID' ) as string
 
 		if ( id === 'add' ) {
@@ -101,7 +103,7 @@ export const actions: Actions = {
 		} else {
 			await db.update( teams )
 				.set( {
-					name, shortName, competitionID
+					name, shortName, gameDay, competitionID,
 				} ).where( eq( teams.id, id ) )
 
 			/* if ( error ) {
