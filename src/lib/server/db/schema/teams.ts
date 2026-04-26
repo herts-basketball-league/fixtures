@@ -1,12 +1,13 @@
 import { relations } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
-import { pgPolicy, pgTable, uuid, varchar, timestamp } from 'drizzle-orm/pg-core';
+import { pgPolicy, pgTable, uuid, varchar, timestamp, smallint } from 'drizzle-orm/pg-core';
 import { competitions } from './competitions';
 
 export const teams = pgTable( 'teams', {
 	id: uuid( 'id' ).primaryKey().defaultRandom().notNull(),
 	name: varchar( 'name', { length: 255 } ).notNull(),
 	shortName: varchar( 'short_name', { length: 255 } ),
+	gameDay: smallint("game_day"),
 	competitionID: uuid( 'competition_id' ).notNull().references( () => competitions.id ),
 	createdAt: timestamp( 'created_at' )
 		.default( sql`now()` )
