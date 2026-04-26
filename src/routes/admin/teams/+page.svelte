@@ -9,7 +9,11 @@
 	);
 
 	$effect( () => {
-		if ( browser ) localStorage.setItem( 'seasonFilter', selectedSeason );
+		selectedSeason;
+
+		if (browser) localStorage.setItem('seasonFilter', selectedSeason);
+
+		selectedCompetition = '';
 	} );
 
 	let selectedCompetition = $state(
@@ -33,10 +37,11 @@
 // });
 
 	let teams = $derived(
-		selectedSeason
-			? data.teams.filter(
-				c => c.season.id === selectedSeason && c.competition.id === selectedCompetition
-			) : data.teams
+		selectedCompetition
+			? data.teams.filter( t => t.competition.id === selectedCompetition )
+			: selectedSeason
+				? data.teams.filter( t => t.season.id === selectedSeason )
+				: data.teams
 	);
 </script>
 
