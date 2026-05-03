@@ -22,6 +22,13 @@
       "when": 1777213737812,
       "tag": "20260426142857_teams_add_game_day",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777281064768,
+      "tag": "20260427091104_teams_update_game_day",
+      "breakpoints": true
     }
   ]
 }

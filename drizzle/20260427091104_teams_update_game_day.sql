@@ -1,0 +1,1 @@
+ALTER TABLE "teams" ALTER COLUMN "game_day" SET DEFAULT 1;
