@@ -7,7 +7,7 @@ export const teams = pgTable( 'teams', {
 	id: uuid( 'id' ).primaryKey().defaultRandom().notNull(),
 	name: varchar( 'name', { length: 255 } ).notNull(),
 	shortName: varchar( 'short_name', { length: 255 } ),
-	gameDay: smallint("game_day"),
+	gameDay: smallint('game_day').default( 1 ),
 	competitionID: uuid( 'competition_id' ).notNull().references( () => competitions.id ),
 	createdAt: timestamp( 'created_at' )
 		.default( sql`now()` )

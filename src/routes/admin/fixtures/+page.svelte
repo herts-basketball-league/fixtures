@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { generateBergerTable } from '$lib/berger';
-	import { assignRoundDates, formatWeekDate } from '$lib/schedule';
+	import { assignRoundDates, formatWeekDate, getGameDate } from '$lib/schedule';
 
 	let { data } = $props();
 
@@ -27,6 +27,7 @@
 		teams.length > 0
 			? generateBergerTable(teams.length, legs).map(f => ({
 				round: f.round,
+				gameDay: teams[f.home - 1].gameDay,
 				home: teams[f.home - 1].name,
 				away: teams[f.away - 1].name,
 				homeId: teams[f.home - 1].id,
@@ -39,7 +40,9 @@
 	let rounds = $derived(
 		preview.reduce((acc, f) => {
 			if (!acc[f.round]) acc[f.round] = [];
+
 			acc[f.round].push(f);
+
 			return acc;
 		}, {} as Record<number, typeof preview>)
 	);
@@ -71,7 +74,7 @@
 
 // dump data to browser console
 // $effect(() => {
-// 	console.log('excludedDates', excludedDates);
+// 	console.log('getGameDate', getGameDate( new Date('2026-09-07'), 3 ));
 // });
 
 	let roundDates = $derived(
@@ -130,7 +133,7 @@
 	{:else if preview.length > 0}
 		<form method="POST" action="?/generate" use:enhance>
 			<p class="text-sm text-gray-500 mb-4">
-				{teams.length} teams · {Object.keys(rounds).length} rounds · {preview.length} matches
+				{teams.length} teams - {Object.keys(rounds).length} rounds - {preview.length} matches
 			</p>
 
 			{#each Object.entries(rounds) as [round, matches]}
@@ -141,12 +144,13 @@
 							- {formatWeekDate(roundDates[Number(round)])}
 						{/if}
 					</h2>
-					
+
 					<div class="border rounded-lg overflow-hidden">
 						<table class="w-full text-sm">
 							<thead>
 								<tr class="bg-gray-50 text-left">
 									<th class="px-4 py-2">#</th>
+									<th class="px-4 py-2">Game Day</th>
 									<th class="px-4 py-2">Home</th>
 									<th class="px-4 py-2">Away</th>
 								</tr>
@@ -155,6 +159,7 @@
 								{#each matches as match, i}
 									<tr class="border-t">
 										<td class="px-4 py-2 text-gray-400">{i + 1}</td>
+										<td class="px-4 py-2">{ formatWeekDate( getGameDate( new Date( roundDates[ Number( round ) ] ), match.gameDay ) ) }</td>
 										<td class="px-4 py-2">{match.home}</td>
 										<td class="px-4 py-2">{match.away}</td>
 									</tr>

@@ -33,3 +33,13 @@ export function formatWeekDate(date: Date): string {
 		year: 'numeric'
 	});
 }
+
+export function getGameDate( roundDate: Date, gameDay: number ): Date {
+	const roundDay = roundDate.getDay();
+	const offset = ( gameDay - roundDay + 7) % 7;
+	const gameDate = new Date( roundDate );
+
+	gameDate.setDate( gameDate.getDate() + offset );
+
+	return gameDate;
+}

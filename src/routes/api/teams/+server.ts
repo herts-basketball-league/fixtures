@@ -18,6 +18,7 @@ export const GET: RequestHandler = async ( { url } ) => {
 		columns: {
 			id: true,
 			name: true,
+			gameDay: true,
 		},
 		orderBy: ( teams, { asc }) => asc( teams.name ),
 	} );
