@@ -245,7 +245,7 @@
 		</svg>
 	</button>
 
-	<div class="flex-1 text-sm/6 font-semibold text-white">Dashboard - desktop 3</div>
+	<div class="flex-1 text-sm/6 font-semibold text-white">HBL Admin</div>
 
 	<!-- <a href="#">
 		<span class="sr-only">Your profile</span>
