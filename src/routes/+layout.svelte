@@ -237,7 +237,7 @@
 	</div>
 </div>
 
-<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-xs sm:px-6 lg:hidden dark:bg-indigo-800 dark:after:pointer-events-none dark:after:absolute dark:after:inset-x-0 dark:after:bottom-0 dark:after:h-px dark:after:bg-white/10">
+<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-xs sm:px-6 lg:hidden dark:bg-indigo-800 dark:after:pointer-events-none dark:after:absolute dark:after:inset-x-0 dark:after:bottom-0 dark:after:h-px dark:after:bg-white/10 print:hidden">
 	<button type="button" command="show-modal" commandfor="sidebar" class="-m-2.5 p-2.5 text-indigo-200 hover:text-white lg:hidden">
 		<span class="sr-only">Open sidebar</span>
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
