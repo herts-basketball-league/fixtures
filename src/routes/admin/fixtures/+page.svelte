@@ -147,7 +147,7 @@
 			</p>
 
 			{#each Object.entries(rounds) as [round, matches]}
-				<div class="mb-4">
+				<div class="mb-4 print:break-inside-avoid">
 					<h2 class="text-sm font-medium text-gray-500 mb-2">
 						Round {round}
 						{#if roundDates[Number(round)]}
@@ -156,7 +156,7 @@
 					</h2>
 
 					<div class="border rounded-lg overflow-hidden">
-						<table class="w-full text-sm print:break-inside-avoid">
+						<table class="w-full text-sm">
 							<thead>
 								<tr class="bg-gray-50 text-left">
 									<th class="px-4 py-2">#</th>
