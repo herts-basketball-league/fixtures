@@ -156,7 +156,7 @@
 					</h2>
 
 					<div class="border rounded-lg overflow-hidden">
-						<table class="w-full text-sm">
+						<table class="w-full text-sm print:break-inside-avoid">
 							<thead>
 								<tr class="bg-gray-50 text-left">
 									<th class="px-4 py-2">#</th>
@@ -184,7 +184,7 @@
 			<input type="hidden" name="legs" value={legs} />
 			<input type="hidden" name="fixtures" value={JSON.stringify(preview)} />
 
-			<button type="submit" class="mt-4">
+			<button type="submit" class="mt-4 print:hidden">
 				Save fixtures
 			</button>
 		</form>
