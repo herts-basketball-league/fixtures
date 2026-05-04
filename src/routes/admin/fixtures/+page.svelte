@@ -88,13 +88,19 @@
 	);
 </script>
 
-<div class="p-4">
-	<h1 class="text-xl font-medium mb-6">Generate fixtures</h1>
+<div class="px-4 sm:px-6 lg:px-8">
+	<div class="sm:flex-auto">
+		<h1 class="text-base font-semibold text-gray-900 dark:text-white">Fixtures</h1>
+		<p class="mt-2 text-sm text-gray-700 dark:text-gray-300 print:hidden">Generate fixtures by season and competition</p>
+	</div>
 
-	<div class="flex gap-4 flex-wrap mb-6">
+	<div class="flex gap-4 flex-wrap mb-6 print:hidden">
 		<div class="flex flex-col gap-1 w-1/4">
 			<label for="season">Season</label>
-			<select id="season" bind:value={selectedSeason}>
+			<select
+				id="season"
+				bind:value={selectedSeason}
+				class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
 				<option value="">Select a Season</option>
 				{#each data.seasons as season}
 					<option value={season.id}>{season.name}</option>
@@ -109,7 +115,7 @@
 				bind:value={selectedCompetition}
 				onchange={onCompetitionChange}
 				disabled={!selectedSeason}
-			>
+				class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
 				<option value="">Select a Competition</option>
 				{#each competitions as comp}
 					<option value={comp.id}>{comp.name}</option>
@@ -119,7 +125,11 @@
 
 		<div class="flex flex-col gap-1 w-1/4">
 			<label for="legs">Legs</label>
-			<select id="legs" bind:value={legs} disabled={!selectedCompetition}>
+			<select
+				id="legs"
+				bind:value={legs}
+				disabled={!selectedCompetition}
+				class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:*:bg-gray-800 dark:focus-visible:outline-indigo-500">
 				<option value={1}>Single leg</option>
 				<option value={2}>Double leg (home & away)</option>
 			</select>
