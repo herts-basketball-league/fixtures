@@ -94,9 +94,9 @@
 		<p class="mt-2 text-sm text-gray-700 dark:text-gray-300 print:hidden">Generate fixtures by season and competition</p>
 	</div>
 
-	<div class="flex gap-4 flex-wrap mb-6 print:hidden">
+	<div class="flex gap-4 flex-wrap mb-6 mt-8 print:hidden">
 		<div class="flex flex-col gap-1 w-1/4">
-			<label for="season">Season</label>
+			<label for="season" class="block text-sm/6 font-medium text-gray-900 dark:text-white">Season</label>
 			<select
 				id="season"
 				bind:value={selectedSeason}
@@ -109,7 +109,7 @@
 		</div>
 
 		<div class="flex flex-col gap-1 w-1/4">
-			<label for="competition">Competition</label>
+			<label for="competition" class="block text-sm/6 font-medium text-gray-900 dark:text-white">Competition</label>
 			<select
 				id="competition"
 				bind:value={selectedCompetition}
@@ -124,7 +124,7 @@
 		</div>
 
 		<div class="flex flex-col gap-1 w-1/4">
-			<label for="legs">Legs</label>
+			<label for="legs" class="block text-sm/6 font-medium text-gray-900 dark:text-white">Legs</label>
 			<select
 				id="legs"
 				bind:value={legs}
@@ -147,7 +147,7 @@
 			</p>
 
 			{#each Object.entries(rounds) as [round, matches]}
-				<div class="mb-4 print:break-inside-avoid">
+				<div class="mb-8 print:break-inside-avoid">
 					<h2 class="text-sm font-medium text-gray-500 mb-2">
 						Round {round}
 						{#if roundDates[Number(round)]}
@@ -155,27 +155,34 @@
 						{/if}
 					</h2>
 
-					<div class="border rounded-lg overflow-hidden">
-						<table class="w-full text-sm">
-							<thead>
-								<tr class="bg-gray-50 text-left">
-									<th class="px-4 py-2">#</th>
-									<th class="px-4 py-2">Game Day</th>
-									<th class="px-4 py-2">Home</th>
-									<th class="px-4 py-2">Away</th>
-								</tr>
-							</thead>
-							<tbody>
-								{#each matches as match, i}
-									<tr class="border-t">
-										<td class="px-4 py-2 text-gray-400">{i + 1}</td>
-										<td class="px-4 py-2">{ formatWeekDate( getGameDate( new Date( roundDates[ Number( round ) ] ), match.gameDay ) ) }</td>
-										<td class="px-4 py-2">{match.home}</td>
-										<td class="px-4 py-2">{match.away}</td>
-									</tr>
-								{/each}
-							</tbody>
-						</table>
+					<div class="mt-4 flow-root">
+						<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+							<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+								<div class="overflow-hidden shadow-sm outline-1 outline-black/5 sm:rounded-lg dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
+									<table class="relative min-w-full divide-y divide-gray-300 dark:divide-white/15">
+										<thead class="bg-gray-50 dark:bg-gray-800/75">
+											<tr>
+												<th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-200">#</th>
+												<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200">Game Day</th>
+												<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200">Home Team</th>
+												<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200">Away Team</th>
+											</tr>
+										</thead>
+
+										<tbody class="divide-y divide-gray-200 bg-white dark:divide-white/10 dark:bg-gray-800/50">
+											{#each matches as match, i}
+												<tr>
+													<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">{i + 1}</td>
+													<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">{ formatWeekDate( getGameDate( new Date( roundDates[ Number( round ) ] ), match.gameDay ) ) }</td>
+													<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">{match.home}</td>
+													<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">{match.away}</td>
+												</tr>
+											{/each}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			{/each}
@@ -188,5 +195,42 @@
 				Save fixtures
 			</button>
 		</form>
+
+		<div class="mt-8 print:break-inside-avoid">
+			<div class="sm:flex sm:items-center">
+				<div class="sm:flex-auto">
+					<h1 class="text-base font-semibold text-gray-900 dark:text-white">Excluded Weeks</h1>
+					<p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Weeks omitted due to holidays or cup games etc.</p>
+				</div>
+			</div>
+
+			<div class="mt-8 flow-root">
+				<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+					<div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+						<div class="overflow-hidden shadow-sm outline-1 outline-black/5 sm:rounded-lg dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
+							<table class="relative min-w-full divide-y divide-gray-300 dark:divide-white/15">
+								<thead class="bg-gray-50 dark:bg-gray-800/75">
+									<tr>
+										<th scope="col" class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-200">Week Starting</th>
+										<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-200">Reason</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-gray-200 bg-white dark:divide-white/10 dark:bg-gray-800/50">
+									{#each data.excludedWeeks as excludedWeek}
+										<tr>
+											<td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">{ formatWeekDate( excludedWeek.weekDate ) }</td>
+											<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">{ excludedWeek.reason } ({ excludedWeek.note })</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
 	{/if}
 </div>
